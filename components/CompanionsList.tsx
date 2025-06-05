@@ -1,3 +1,6 @@
+import Link from "next/link";
+import Image from "next/image";
+import { cn, getSubjectColor } from "@/lib/utils";
 import {
     Table,
     TableBody,
@@ -6,9 +9,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { cn, getSubjectColor } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
 
 interface CompanionsListProps {
   title: string;
@@ -31,8 +31,8 @@ const CompanionLists = ({ title, companions, classNames }: CompanionsListProps) 
           </TableHeader>
 
           <TableBody>
-              {companions?.map(({ id, subject, name, topic, duration }) => (
-                  <TableRow key={id}>
+              {companions?.map(({ id, subject, name, topic, duration }, index) => (
+                  <TableRow key={index}>
                       <TableCell>
                           <Link href={`/companions/${id}`}>
                               <div className="flex items-center gap-2">
@@ -54,26 +54,34 @@ const CompanionLists = ({ title, companions, classNames }: CompanionsListProps) 
                               </div>
                           </Link>
                       </TableCell>
+
                       <TableCell>
                           <div className="subject-badge w-fit max-md:hidden">
                               {subject}
                           </div>
                           <div className="flex items-center justify-center rounded-lg w-fit p-2 md:hidden" style={{backgroundColor: getSubjectColor(subject)}}>
-                      <Image
-                          src={`/icons/${subject}.svg`}
-                          alt={subject}
-                          width={18}
-                          height={18}
-                      />
+                            <Image
+                                src={`/icons/${subject}.svg`}
+                                alt={subject}
+                                width={18}
+                                height={18}
+                            />
                           </div>
                       </TableCell>
+
                       <TableCell>
                           <div className="flex items-center gap-2 w-full justify-end">
-                              <p className="text-2xl">
-                                  {duration} {' '}
-                                  <span className="max-md:hidden">mins</span>
-                              </p>
-                              <Image src="/icons/clock.svg" alt="minutes" width={14} height={14} className="md:hidden" />
+                            <p className="text-2xl">
+                                {duration} {' '}
+                                <span className="max-md:hidden">mins</span>
+                            </p>
+                            <Image 
+                                src="/icons/clock.svg" 
+                                alt="Minutes" 
+                                width={14} 
+                                height={14} 
+                                className="md:hidden" 
+                            />
                           </div>
                       </TableCell>
                   </TableRow>
