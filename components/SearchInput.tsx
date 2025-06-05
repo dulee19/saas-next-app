@@ -9,11 +9,14 @@ const SearchInput = () => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const query = searchParams.get('topic') || '';
 
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     useEffect(() => {
-        setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const delayDebounceFn = setTimeout(() => {
             if(searchQuery) {
                 const newUrl = formUrlQuery({
                     params: searchParams.toString(),
@@ -34,7 +37,6 @@ const SearchInput = () => {
             }
         }, 500)
     }, [searchQuery, router, searchParams, pathname]);
-
 
   return (
     <div className="flex gap-2 px-2 py-1 h-fit relative border border-black rounded-lg">
