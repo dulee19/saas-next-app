@@ -3,7 +3,7 @@ import SearchInput from "@/components/SearchInput";
 import SubjectFilter from "@/components/SubjectFilter";
 import { getAllCompanions, getBookmarkedCompanions } from "@/lib/actions/companion.actions";
 import { getSubjectColor } from "@/lib/utils";
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
   const filters = await searchParams;
@@ -12,12 +12,12 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
 
   const companions = await getAllCompanions({ subject, topic });
 
-   const { userId } = await auth();
+   const user = await currentUser();
   
     let bookmarkedIds: string[] = [];
   
-    if (userId) {
-      const bookmarked = await getBookmarkedCompanions(userId);
+    if (user?.id) {
+      const bookmarked = await getBookmarkedCompanions(user?.id);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       bookmarkedIds = bookmarked.map((companion) => companion?.id);

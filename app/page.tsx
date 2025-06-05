@@ -4,18 +4,18 @@ import CompanionLists from '@/components/CompanionsList'
 import Cta from '@/components/CTA'
 import { getAllCompanions, getBookmarkedCompanions, getRecentSessions } from '@/lib/actions/companion.actions'
 import { getSubjectColor } from '@/lib/utils'
-import { auth } from '@clerk/nextjs/server'
+import { currentUser } from '@clerk/nextjs/server'
 
 const Page = async () => {
   const companions = await getAllCompanions({ limit: 3 });
   const recentSessionsCompanions = await getRecentSessions(10);
   
-  const { userId } = await auth();
+  const user = await currentUser();
 
   let bookmarkedIds: string[] = [];
 
-  if (userId) {
-    const bookmarked = await getBookmarkedCompanions(userId);
+  if (user?.id) {
+    const bookmarked = await getBookmarkedCompanions(user?.id);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     bookmarkedIds = bookmarked.map((companion) => companion?.id);
